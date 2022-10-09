@@ -1,0 +1,5 @@
+set.seed(111)
+x <- runif(50, 1, 2)
+y <- runif(5000, 1, 2)
+hist(x)
+hist(y)
