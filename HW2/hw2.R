@@ -1,23 +1,25 @@
-
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 set.seed(1)
 
+# Generate a model with 5 covariants
 x1 <- runif(100, 3, 500)
 x2 <- runif(100, 7, 400)
 x3 <- runif(100, 5, 100)
 x4 <- runif(100, 10, 200)
 x5 <- runif(100, 7, 300)
-e <- rnorm(100, sd = 50)
+e <- rnorm(100, sd = 10)
 
+# This are the real parameters
 b0 <- 5
 b1 <- 7
 b2 <- 3
 b3 <- 6
-b4 <- 10
-b5 <- 20
+b4 <- 1
+b5 <- 2
 
+# Calculate the response
 y <- b0 + b1*x1 + b2*x2 + b3*x3 + b4*x4 + b5*x5 + e
 
+# These are the random starting parameters
 b1 <- -5
 b2 <- 30
 b3 <- 4
@@ -26,6 +28,7 @@ b5 <- -100
 
 b1s = b2s = b3s = b4s = b5s = c()
 
+# Main cycle to implement backfitting
 for (i in 1:10) {
   a <- y - b1 * x1 - b3 * x3 - b4 * x4 - b5 * x5
   b2 <- lm(a ~ x2)$coef[2]
@@ -49,9 +52,29 @@ for (i in 1:10) {
   
 }
 
-plot(b1s, type='b')
-plot(b2s, type='b')
-plot(b3s, type='b')
-plot(b4s, type='b')
-plot(b5s, type='b')
+# Let's plot results
+png(filename = 'b1.png', width = 1024, height = 1024)
+plot(b1s, type='b', xlab = 'steps', ylab = 'b1')
+abline(b1, 0, col = 'red')
+dev.off()
+
+png(filename = 'b2.png', width = 1024, height = 1024)
+plot(b2s, type='b', xlab = 'steps', ylab = 'b2')
+abline(b2, 0, col = 'red')
+dev.off()
+
+png(filename = 'b3.png', width = 1024, height = 1024)
+plot(b3s, type='b', xlab = 'steps', ylab = 'b3')
+abline(b3, 0, col = 'red')
+dev.off()
+
+png(filename = 'b4.png', width = 1024, height = 1024)
+plot(b4s, type='b', xlab = 'steps', ylab = 'b4')
+abline(b4, 0, col = 'red')
+dev.off()
+
+png(filename = 'b5.png', width = 1024, height = 1024)
+plot(b5s, type='b', xlab = 'steps', ylab = 'b5')
+abline(b5, 0, col = 'red')
+dev.off()
 
